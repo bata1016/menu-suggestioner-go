@@ -17,11 +17,11 @@ type DynamoDB struct {
 }
 
 // NewDynamoDBは、DynamoDBのクライアントを生成します。
-func NewDynamoDB() *DynamoDB {
+func NewDynamoDB(tableName string) *DynamoDB {
 	ddb := dynamodb.New(session.New(), aws.NewConfig().WithRegion("ap-northeast-1"))
 	return &DynamoDB{
 		client:    ddb,
-		tableName: "",
+		tableName: tableName,
 	}
 }
 
@@ -42,7 +42,7 @@ func (ddb *DynamoDB) PutItem(params interface{}) (*dynamodb.PutItemOutput, error
 	if err != nil {
 		return nil, errors.New(fmt.Sprintf("PutItem got Error. %s", err))
 	}
-	if result != nil {
+	if result == nil {
 		return nil, errors.New(fmt.Sprintf("PutItem got nil."))
 	}
 	return result, nil

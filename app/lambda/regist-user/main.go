@@ -9,6 +9,7 @@ import (
 
 // Request は、lambdaハンドラのリクエストです。
 type Request struct {
+	Uuid  string `json:"uuid"`
 	Email string `json:"email"`
 	Name  string `json:"name"`
 }
@@ -22,10 +23,11 @@ func main() {
 	lambda.Start(HandleRequest)
 }
 
-// HandleRequest 、lambdaのリクエストハンドラ関数です。
+// HandleRequest は、lambdaのリクエストハンドラ関数です。
 func HandleRequest(request *Request, ctx context.Context) (*Response, error) {
 	user := models.NewUser()
 	params := &models.PutUserParams{
+		Uuid:  request.Uuid,
 		Email: request.Email,
 		Name:  request.Name,
 	}

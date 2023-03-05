@@ -19,13 +19,14 @@ func NewUser() *User {
 }
 
 type PutUserParams struct {
-	Email string
-	Name  string
+	Uuid  string `json:"uuid"`
+	Email string `json:"email"`
+	Name  string `json:"name"`
 }
 
 // Put は、新しいユーザーを登録します。
 func (u *User) Put(params *PutUserParams) error {
-	ddb := ddb.NewDynamoDB()
+	ddb := ddb.NewDynamoDB("users")
 	_, err := ddb.PutItem(params)
 	if err != nil {
 		return err
