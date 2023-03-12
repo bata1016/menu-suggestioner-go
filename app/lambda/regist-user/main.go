@@ -2,16 +2,19 @@ package main
 
 import (
 	"context"
-	"github.com/google/uuid"
+	"encoding/json"
+	"fmt"
 	"time"
 
+	"github.com/google/uuid"
+
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	models "github.com/module/menu-suggestioner-go/app/models"
 )
 
 // Request は、lambdaハンドラのリクエストです。
 type Request struct {
-	Uuid  string `json:"uuid"`
 	Email string `json:"email"`
 	Name  string `json:"name"`
 }
@@ -26,7 +29,15 @@ func main() {
 }
 
 // HandleRequest は、lambdaのリクエストハンドラ関数です。
-func HandleRequest(ctx context.Context, request *Request) (*Response, error) {
+func HandleRequest(ctx context.Context, apiRequest events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	var request Request
+	err := json.Unmarshal([]byte(apiRequest.Body), &request)
+	if err != nil {
+		return events.APIGatewayProxyResponse{
+			Body:       fmt.Sprintf("Got Error in Unmarshal Request. Detail: %v", err.Error()),
+			StatusCode: 500,
+		}, err
+	}
 	user := models.NewUser()
 	uuid, _ := uuid.NewRandom()
 	params := &models.PutUserParams{
@@ -35,11 +46,15 @@ func HandleRequest(ctx context.Context, request *Request) (*Response, error) {
 		Name:      request.Name,
 		CreatedAt: time.Now().UTC().String(),
 	}
-	err := user.Put(params)
+	err = user.Put(params)
 	if err != nil {
-		return nil, err
+		return events.APIGatewayProxyResponse{
+			Body:       fmt.Sprintf("Got Error in Regist User Request. Detail: %v", err.Error()),
+			StatusCode: 500,
+		}, err
 	}
-	return &Response{
-		Message: "新しいユーザーの登録に成功しました。",
-	}, nil
+	return events.APIGatewayProxyResponse{
+		Body:       "Success Create New User",
+		StatusCode: 200,
+	}, err
 }
