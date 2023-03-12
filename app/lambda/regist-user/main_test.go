@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/google/uuid"
@@ -19,5 +20,5 @@ func TestRegistUser(t *testing.T) {
 	if err != nil {
 		t.Fatalf("err is {%v}", err)
 	}
-	println(res)
+	fmt.Println(res)
 }
