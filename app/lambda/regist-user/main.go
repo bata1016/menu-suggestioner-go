@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"time"
 
 	"github.com/aws/aws-lambda-go/lambda"
 	models "github.com/module/menu-suggestioner-go/app/models"
@@ -27,9 +28,10 @@ func main() {
 func HandleRequest(request *Request, ctx context.Context) (*Response, error) {
 	user := models.NewUser()
 	params := &models.PutUserParams{
-		Uuid:  request.Uuid,
-		Email: request.Email,
-		Name:  request.Name,
+		Uuid:      request.Uuid,
+		Email:     request.Email,
+		Name:      request.Name,
+		CreatedAt: time.Now().UTC().String(),
 	}
 	err := user.Put(params)
 	if err != nil {

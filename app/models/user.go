@@ -19,9 +19,10 @@ func NewUser() *User {
 }
 
 type PutUserParams struct {
-	Uuid  string `json:"uuid"`
-	Email string `json:"email"`
-	Name  string `json:"name"`
+	Uuid      string `json:"uuid"`
+	Email     string `json:"email"`
+	Name      string `json:"name"`
+	CreatedAt string `json:"createdAt"`
 }
 
 // Put は、新しいユーザーを登録します。
