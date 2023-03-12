@@ -15,7 +15,7 @@ func TestRegistUser(t *testing.T) {
 		Name:  "test1",
 	}
 	ctx := context.Background()
-	res, err := HandleRequest(request, ctx)
+	res, err := HandleRequest(ctx, request)
 	if err != nil {
 		t.Fatalf("err is {%v}", err)
 	}

@@ -25,7 +25,7 @@ func main() {
 }
 
 // HandleRequest は、lambdaのリクエストハンドラ関数です。
-func HandleRequest(request *Request, ctx context.Context) (*Response, error) {
+func HandleRequest(ctx context.Context, request *Request) (*Response, error) {
 	user := models.NewUser()
 	params := &models.PutUserParams{
 		Uuid:      request.Uuid,
