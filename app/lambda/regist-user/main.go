@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"time"
 
 	"github.com/aws/aws-lambda-go/lambda"
@@ -27,8 +28,9 @@ func main() {
 // HandleRequest は、lambdaのリクエストハンドラ関数です。
 func HandleRequest(ctx context.Context, request *Request) (*Response, error) {
 	user := models.NewUser()
+	uuid, _ := uuid.NewRandom()
 	params := &models.PutUserParams{
-		Uuid:      request.Uuid,
+		Uuid:      uuid.String(),
 		Email:     request.Email,
 		Name:      request.Name,
 		CreatedAt: time.Now().UTC().String(),

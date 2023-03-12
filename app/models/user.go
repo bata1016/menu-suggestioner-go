@@ -18,6 +18,7 @@ func NewUser() *User {
 	}
 }
 
+// PutUserParams は、ユーザー登録のリクエストパラメーターです。
 type PutUserParams struct {
 	Uuid      string `json:"uuid"`
 	Email     string `json:"email"`
